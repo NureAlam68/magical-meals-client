@@ -16,7 +16,7 @@ const Category = () => {
   return (
     <div className="px-5 md:px-10 lg:px-20 2xl:px-[300px] mt-8 md:mt-10 lg:mt-20">
         <SectionTitle subHeading={'From 11:00am to 10:00pm'} heading={'ORDER ONLINE'}></SectionTitle>
-      <div className="mt-7 md:mt-10 lg:mt-[76px]">
+      <div className="mt-7 md:mt-10 lg:mt-[48px]">
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
