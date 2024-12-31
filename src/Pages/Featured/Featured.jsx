@@ -22,7 +22,7 @@ const Featured = () => {
             the freshest ingredients. From savory appetizers to indulgent
             desserts, we cater to all tastes and dietary preferences. Each item is thoughtfully prepared to provide a memorable culinary experience.
           </p>
-          <button className="px-[30px] py-[20px] rounded-[8px] border-b-[3px] hover:border-[3px] mt-6 uppercase">Order Now</button>
+          <button className="px-[30px] py-[20px] rounded-[8px] border-b-[3px] hover:border-[3px] hover:bg-black mt-6 uppercase">Order Now</button>
         </div>
       </div>
     </div>
