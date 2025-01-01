@@ -1,17 +1,14 @@
+import { NavLink } from "react-router-dom";
+import "./Navbar.css"
+
 const Navbar = () => {
   const navOptions = (
     <>
       <li>
-        <a>Item 1</a>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <a>Item 1</a>
-      </li>
-      <li>
-        <a>Item 1</a>
-      </li>
-      <li>
-        <a>Item 1</a>
+        <NavLink to="/menu">Our Menu</NavLink>
       </li>
     </>
   );
@@ -38,18 +35,24 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-black font-inter font-extrabold"
+              className="dropdown-content rounded-box z-[1] mt-3 w-52 p-2 shadow text-black font-inter font-extrabold uppercase bg-slate-400"
             >
               {navOptions}
             </ul>
           </div>
           <div className="btn btn-ghost flex flex-col">
-            <h1 className="text-[20px] md:text-[24px] lg:text-[32px] font-black font-cinzel">Magical Meals</h1>
-            <p className="text-[18px] lg:text-[24px] font-bold mt-2 font-cinzel">Restaurant</p>
+            <h1 className="text-[20px] md:text-[24px] lg:text-[32px] font-black font-cinzel">
+              Magical Meals
+            </h1>
+            <p className="text-[18px] lg:text-[24px] font-bold mt-2 font-cinzel">
+              Restaurant
+            </p>
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 font-inter font-extrabold">{navOptions}</ul>
+          <ul className="flex gap-2 uppercase px-1 font-inter font-extrabold">
+            {navOptions}
+          </ul>
         </div>
         <div className="navbar-end">
           <a className="btn">Button</a>
