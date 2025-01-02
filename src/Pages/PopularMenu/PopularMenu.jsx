@@ -1,6 +1,7 @@
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import MenuItem from "../Shared/MenuItem/MenuItem";
 import useMenu from "../../hooks/useMenu";
+import { Link } from "react-router-dom";
 
 
 const PopularMenu = () => {
@@ -15,7 +16,11 @@ const PopularMenu = () => {
                     popular.map(item => <MenuItem key={item._id} item={item}></MenuItem>)
                 }
             </div>
-            <button className="px-[30px] py-[20px] rounded-[8px] border-b-[3px] border-black hover:border-[3px] hover:bg-black mt-6 uppercase block mx-auto hover:text-white font-medium">View Full  Menu</button>
+            <div className="flex justify-center mt-10">
+            <Link to="/menu">
+            <button className="px-[30px] py-[20px] rounded-[8px] text-[20px] text-[#BB8506] font-inter font-medium border-b-[3px] border-[#BB8506] bg-[#111827] hover:text-white mt-6">VIEW FULL MENU</button>
+            </Link>
+            </div>
         </section>
     );
 };

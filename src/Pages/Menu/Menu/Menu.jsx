@@ -34,19 +34,19 @@ const Menu = () => {
             </section>
             {/* dessert menu */}
             <section className="mt-8 md:mt-10 lg:mt-[45px]">
-                <MenuCategory items={desserts} title={"DESSERTS"} img={dessertImg} subTitle={"Sweet indulgences crafted to delight your taste buds, desserts are the perfect ending to any meal."}></MenuCategory>
+                <MenuCategory items={desserts} title={"dessert"} img={dessertImg} subTitle={"Sweet indulgences crafted to delight your taste buds, desserts are the perfect ending to any meal."}></MenuCategory>
             </section>
             {/* pizza menu */}
             <section className="mt-8 md:mt-10 lg:mt-[55px]">
-                <MenuCategory items={pizza} img={pizzaImg} title={"PIZZA"} subTitle={"A savory delight loved worldwide, pizza is a perfect blend of crispy crust, rich sauce, melted cheese, and endless toppings."}></MenuCategory>
+                <MenuCategory items={pizza} img={pizzaImg} title={"pizza"} subTitle={"A savory delight loved worldwide, pizza is a perfect blend of crispy crust, rich sauce, melted cheese, and endless toppings."}></MenuCategory>
             </section>
             {/* salad menu */}
             <section className="mt-8 md:mt-10 lg:mt-[55px]">
-                <MenuCategory items={salad} img={saladImg} title={"SALADS"} subTitle={"A refreshing mix of vibrant vegetables, fruits, and greens, salads offer a healthy and flavorful option."}></MenuCategory>
+                <MenuCategory items={salad} img={saladImg} title={"salad"} subTitle={"A refreshing mix of vibrant vegetables, fruits, and greens, salads offer a healthy and flavorful option."}></MenuCategory>
             </section>
             {/* pizza menu */}
             <section className="mt-8 md:mt-10 lg:mt-[55px]">
-                <MenuCategory items={soup} img={soupImg} title={"SOUPS"} subTitle={"Warm and comforting, soups are a flavorful blend of ingredients that nourish the soul."}></MenuCategory>
+                <MenuCategory items={soup} img={soupImg} title={"soup"} subTitle={"Warm and comforting, soups are a flavorful blend of ingredients that nourish the soul."}></MenuCategory>
             </section>
         </div>
     );

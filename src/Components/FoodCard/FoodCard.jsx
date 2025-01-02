@@ -10,6 +10,9 @@ const FoodCard = ({item}) => {
           className="w-full"
         />
       </figure>
+      <p className="font-inter bg-[#111827] text-white font-semibold absolute top-5 right-5 px-[22px] py-[11px]">
+        ${price}
+      </p>
       <div className="card-body">
         <h2 className="font-inter text-[24px] font-semibold text-center">{name}</h2>
         <p className="font-inter text-[#737373]">{recipe}</p>

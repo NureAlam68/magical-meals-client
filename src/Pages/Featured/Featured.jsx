@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import featuredImg from "../../assets/home/featured.jpg";
 
@@ -22,7 +23,9 @@ const Featured = () => {
             the freshest ingredients. From savory appetizers to indulgent
             desserts, we cater to all tastes and dietary preferences. Each item is thoughtfully prepared to provide a memorable culinary experience.
           </p>
-          <button className="px-[30px] py-[20px] rounded-[8px] border-b-[3px] hover:border-[3px] hover:bg-black mt-6 uppercase">Order Now</button>
+          <Link to="/order/salad">
+          <button className="px-[30px] py-[20px] rounded-[8px] text-[20px] text-[#BB8506] font-inter font-medium border-b-[3px] border-[#BB8506] bg-[#111827] mt-6 hover:text-white hover:border-white">ORDER FOOD</button>
+          </Link>
         </div>
       </div>
     </div>
