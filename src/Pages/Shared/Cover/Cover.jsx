@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 const Cover = ({ img, title, subTitle }) => {
   return (
     <div
-      className="hero h-[400px] md:h-[500px] lg:h-[600px] xl:h-[800px]"
+      className="hero h-[400px] md:h-[500px] lg:h-[600px] xl:h-[800px] bg-fixed"
       style={{
         backgroundImage: `url(${img})`,
       }}
