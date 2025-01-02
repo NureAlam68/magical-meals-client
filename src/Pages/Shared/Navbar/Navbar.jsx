@@ -10,6 +10,9 @@ const Navbar = () => {
       <li>
         <NavLink to="/menu">Our Menu</NavLink>
       </li>
+      <li>
+        <NavLink to="/order">Order Food</NavLink>
+      </li>
     </>
   );
   return (
@@ -50,7 +53,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="flex gap-2 uppercase px-1 font-inter font-extrabold">
+          <ul className="flex gap-4 uppercase px-1 font-inter font-extrabold">
             {navOptions}
           </ul>
         </div>
