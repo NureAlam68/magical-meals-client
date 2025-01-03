@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import loginBg from "../../assets/others/authentication.png"
+import loginImg from "../../assets/others/authentication2.png"
 
 const Login = () => {
   const captchaRef = useRef(null);
@@ -39,15 +41,17 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen" 
+    style={{backgroundImage: `url(${loginBg})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+    >
       <Helmet>
         <title>Magical Meals | Login</title>
       </Helmet>
-      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg flex flex-col md:flex-row">
+      <div className="w-full max-w-4xl shadow-2xl rounded-lg flex flex-col md:flex-row">
         {/* Left Side - Image */}
-        <div className="hidden md:flex flex-1 items-center justify-center md:px-10">
+        <div className="hidden md:flex flex-1 items-center justify-center md:px-10 bg-white">
           <img
-            src="https://via.placeholder.com/400x400"
+            src={loginImg}
             alt="Cafe Illustration"
             className="max-w-full h-auto"
           />
