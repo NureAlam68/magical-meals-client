@@ -1,16 +1,48 @@
-
+import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import toast from 'react-hot-toast';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 
 const Login = () => {
-    const handleLogin = (e) => {
+  const captchaRef = useRef(null);
+  const [disabled, setDisabled] = useState(true);
+  const [validateDisabled, setValidateDisabled] = useState(false);
+
+  useEffect(() => {
+    try {
+      loadCaptchaEnginge(6);
+    } catch (error) {
+      toast.error("Error initializing CAPTCHA:", error);
+    }
+  }, []);
+
+  const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
+    console.log("Email:", email, "Password:", password);
+  };
+
+  const handleValidateCaptcha = () => {
+    const captcha = captchaRef.current.value;
+
+    if (validateCaptcha(captcha)) {
+      toast.success("CAPTCHA Validated");
+      setDisabled(false);
+      setValidateDisabled(true); // Disable the validate button
+    } else {
+      toast.error("CAPTCHA is incorrect. Please try again.");
+      setDisabled(true);
     }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Helmet>
+        <title>Magical Meals | Login</title>
+      </Helmet>
       <div className="w-full max-w-4xl bg-white shadow-md rounded-lg flex flex-col md:flex-row">
         {/* Left Side - Image */}
         <div className="hidden md:flex flex-1 items-center justify-center md:px-10">
@@ -32,9 +64,9 @@ const Login = () => {
               </label>
               <input
                 type="email"
-                name='email'
+                name="email"
                 id="email"
-                placeholder="Type here"
+                placeholder="Type your email"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-100"
               />
             </div>
@@ -45,7 +77,7 @@ const Login = () => {
               </label>
               <input
                 type="password"
-                name='password'
+                name="password"
                 id="password"
                 placeholder="Enter your password"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-100"
@@ -54,28 +86,36 @@ const Login = () => {
 
             <div className="mb-4">
               <label htmlFor="captcha" className="block text-gray-700 font-medium mb-2">
-                Captcha
+                CAPTCHA Verification
               </label>
-              <div className="flex items-center mb-2">
-                <span className="bg-gray-200 px-3 py-2 rounded">UAgIuO</span>
-                <button
-                  type="button"
-                  className="ml-4 text-blue-500 underline focus:outline-none"
-                >
-                  Reload Captcha
-                </button>
-              </div>
+              <LoadCanvasTemplate />
+
               <input
                 type="text"
+                ref={captchaRef}
                 id="captcha"
-                placeholder="Type here"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-100"
+                placeholder="Type the above characters here"
+                name="captcha"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-100 mt-2"
               />
+              <button
+                onClick={handleValidateCaptcha}
+                type="button"
+                disabled={validateDisabled}
+                className={`w-full bg-[#D1A054B3] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#b58847] transition duration-300 mt-2 ${
+                  validateDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                Validate CAPTCHA
+              </button>
             </div>
 
             <button
+              disabled={disabled}
               type="submit"
-              className="w-full bg-[#D1A054B3] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#b58847] transition duration-300"
+              className={`w-full bg-[#D1A054B3] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#b58847] transition duration-300 ${
+                disabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               Sign In
             </button>
