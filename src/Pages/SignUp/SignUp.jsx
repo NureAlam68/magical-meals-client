@@ -1,19 +1,33 @@
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginBg from "../../assets/others/authentication.png";
 import loginImg from "../../assets/others/authentication2.png";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvider";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
+  const {createUser} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log(data);
+    createUser(data.email, data.password)
+    .then(result => {
+      const loggedUser = result.user;
+      console.log(loggedUser);
+      toast.success("User created successfully");
+      navigate("/");
+    })
+    reset();
   };
 
   return (
@@ -26,7 +40,7 @@ const SignUp = () => {
       }}
     >
       <Helmet>
-        <title>Magical Meals | SignUp</title>
+        <title>Magical Meals | Sign Up</title>
       </Helmet>
       <div className="w-full max-w-4xl shadow-2xl rounded-lg flex flex-col md:flex-row-reverse">
         {/* Right Side - Image */}
@@ -94,6 +108,7 @@ const SignUp = () => {
                   required: true,
                   minLength: 6,
                   maxLength: 20,
+                  pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/
                 })}
                 name="password"
                 id="password"
@@ -102,6 +117,15 @@ const SignUp = () => {
               />
               {errors.password?.type === "required" && (
                 <p className="text-red-500">Password is required</p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-red-500">Password must be 6 characters</p>
+              )}
+              {errors.password?.type === "maxLength" && (
+                <p className="text-red-500">Password must be less than 20 characters</p>
+              )}
+              {errors.password?.type === "pattern" && (
+                <p className="text-red-500">Password must have one uppercase, lowercase, special character</p>
               )}
             </div>
             <button

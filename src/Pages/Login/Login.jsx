@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
@@ -6,13 +6,13 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import loginBg from "../../assets/others/authentication.png"
 import loginImg from "../../assets/others/authentication2.png"
 import { AuthContext } from '../../providers/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
-  const captchaRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
-  const [validateDisabled, setValidateDisabled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
@@ -31,18 +31,34 @@ const Login = () => {
     signIn(email, password)
     .then(result => {
       const user = result.user;
+      console.log(user);
+      Swal.fire({
+        title: "User Login Successful",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `
+        }
+      });
+      navigate("/");
     })
   };
 
-  const handleValidateCaptcha = () => {
-    const captcha = captchaRef.current.value;
+  const handleValidateCaptcha = (e) => {
+    const captcha = e.target.value;
 
     if (validateCaptcha(captcha)) {
-      toast.success("CAPTCHA Validated");
       setDisabled(false);
-      setValidateDisabled(true); // Disable the validate button
     } else {
-      toast.error("CAPTCHA is incorrect. Please try again.");
       setDisabled(true);
     }
   };
@@ -102,23 +118,13 @@ const Login = () => {
               <LoadCanvasTemplate />
 
               <input
+              onBlur={handleValidateCaptcha}
                 type="text"
-                ref={captchaRef}
                 id="captcha"
                 placeholder="Type the above characters here"
                 name="captcha"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-100 mt-2"
               />
-              <button
-                onClick={handleValidateCaptcha}
-                type="button"
-                disabled={validateDisabled}
-                className={`w-full bg-[#D1A054B3] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#b58847] transition duration-300 mt-2 ${
-                  validateDisabled ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                Validate CAPTCHA
-              </button>
             </div>
 
             <button
