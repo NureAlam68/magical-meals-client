@@ -15,20 +15,40 @@ const SignUp = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const {createUser} = useContext(AuthContext);
+  const { createUser, updateUserProfile, signInWithGoogle, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log(data);
-    createUser(data.email, data.password)
-    .then(result => {
+    createUser(data.email, data.password).then((result) => {
       const loggedUser = result.user;
       console.log(loggedUser);
-      toast.success("User created successfully");
-      navigate("/");
-    })
-    reset();
+      updateUserProfile(data.name, data.photoURL)
+        .then(() => {
+          setUser((prevUser) => {
+            return { ...prevUser, displayName: data.name, photoURL: data.photoURL };
+          });
+          reset();
+          toast.success("User created successfully");
+          navigate("/");
+        })
+        .catch((error) => {
+          toast.error("Error updating user profile", { error });
+        });
+    });
   };
+
+  // Google Signin
+  const handleGoogleLogIn = async () => {
+    try {
+      await signInWithGoogle()
+
+      toast.success('Signin Successful')
+      navigate('/')
+    } catch (err) {
+      toast.error(err?.message)
+    }
+  }
 
   return (
     <div
@@ -78,6 +98,25 @@ const SignUp = () => {
             </div>
             <div className="mb-4">
               <label
+                htmlFor="photo"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Photo Url
+              </label>
+              <input
+                type="text"
+                {...register("photoURL", { required: true })}
+                name="photoURL"
+                id="photoURL"
+                placeholder="Photo URL"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-100"
+              />
+              {errors.photoURL && (
+                <span className="text-red-500">Photo Url is required</span>
+              )}
+            </div>
+            <div className="mb-4">
+              <label
                 htmlFor="email"
                 className="block text-gray-700 font-medium mb-2"
               >
@@ -108,7 +147,7 @@ const SignUp = () => {
                   required: true,
                   minLength: 6,
                   maxLength: 20,
-                  pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/
+                  pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
                 })}
                 name="password"
                 id="password"
@@ -122,17 +161,21 @@ const SignUp = () => {
                 <p className="text-red-500">Password must be 6 characters</p>
               )}
               {errors.password?.type === "maxLength" && (
-                <p className="text-red-500">Password must be less than 20 characters</p>
+                <p className="text-red-500">
+                  Password must be less than 20 characters
+                </p>
               )}
               {errors.password?.type === "pattern" && (
-                <p className="text-red-500">Password must have one uppercase, lowercase, special character</p>
+                <p className="text-red-500">
+                  Password must have one uppercase, lowercase, special character
+                </p>
               )}
             </div>
             <button
               type="submit"
               className={`w-full bg-[#D1A054B3] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#b58847] transition duration-300`}
             >
-              Sign Un
+              Sign Up
             </button>
             <p className="text-center text-sm text-gray-500 mt-4">
               Already registered?{" "}
@@ -156,6 +199,7 @@ const SignUp = () => {
                 <FaFacebook size={24} />
               </button>
               <button
+                onClick={handleGoogleLogIn}
                 type="button"
                 className="text-gray-500 hover:text-[#D1A054] transition duration-300"
               >

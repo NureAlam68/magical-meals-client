@@ -10,7 +10,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const Login = () => {
-  const { signIn } = useContext(AuthContext);
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,6 +65,18 @@ const Login = () => {
       setDisabled(true);
     }
   };
+
+  // Google Signin
+  const handleGoogleLogIn = async () => {
+    try {
+      await signInWithGoogle()
+
+      toast.success('Signin Successful')
+      navigate('/')
+    } catch (err) {
+      toast.error(err?.message)
+    }
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen" 
@@ -157,6 +169,7 @@ const Login = () => {
                 <FaFacebook size={24} />
               </button>
               <button
+                onClick={handleGoogleLogIn}
                 type="button"
                 className="text-gray-500 hover:text-[#D1A054] transition duration-300"
               >

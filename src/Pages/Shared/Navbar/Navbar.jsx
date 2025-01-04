@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./Navbar.css"
 import { AuthContext } from "../../../providers/AuthProvider";
 import { useContext } from "react";
+import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -79,8 +80,16 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+      {
+        user ? <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+        <div className="w-10 rounded-full border">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src={user?.photoURL} />
         </div>
+      </div> : <CgProfile size={40} />
+      }
+    </div>
       </div>
     </>
   );
