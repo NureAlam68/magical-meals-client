@@ -1,16 +1,43 @@
 import PropTypes from "prop-types";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
+
 
 const FoodCard = ({item}) => {
-    const { name, image, price, recipe } = item;
+    const { name, image, price, recipe, _id } = item;
     const { user } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const axiosSecure = useAxiosSecure();
+    const [, refetch] = useCart();
 
-    const handleAddToCart = food => {
+    const handleAddToCart = () => {
       if(user && user.email) {
-        ""
+        const cartItem = {
+          menuId: _id,
+          email: user.email,
+          name,
+          image,
+          price
+        }
+        axiosSecure.post('/carts', cartItem)
+        .then(res => {
+          console.log(res.data)
+          if(res.data.insertedId) {
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: `${name} added to your cart.`,
+              showConfirmButton: false,
+              timer: 2000
+            });
+            // refetch cart to update the cart items count
+            refetch();
+          }
+        })
       }
       else{
         Swal.fire({
@@ -23,7 +50,7 @@ const FoodCard = ({item}) => {
           confirmButtonText: "Yes, login!"
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate("/login")
+            navigate("/login", {state: {from: location}})
           }
         });
       }
@@ -44,7 +71,7 @@ const FoodCard = ({item}) => {
         <p className="font-inter text-[#737373]">{recipe}</p>
         <div className="card-actions justify-center mt-6">
           <button
-          onClick={() => handleAddToCart(item)}
+          onClick={handleAddToCart}
           className="bg-[#E8E8E8] px-[30px] py-[20px] rounded-[8px] text-[20px] text-[#BB8506] font-inter font-medium border-b-[3px] border-[#BB8506] hover:bg-[#111827]">ADD TO CART</button>
         </div>
       </div>
