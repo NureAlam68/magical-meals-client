@@ -5,9 +5,9 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <div className="flex">
+    <div className="flex md:bg-gray-100">
       <div className="w-[280px] min-h-screen bg-[#D1A054] pt-[50px]">
-        <div className="btn btn-ghost flex flex-col">
+        <div className="flex flex-col text-center">
           <h1 className="text-[20px] md:text-[24px] lg:text-[28px] font-black font-cinzel">
             Magical Meals
           </h1>
@@ -53,7 +53,7 @@ const Dashboard = () => {
             home</NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/menu">
+            <NavLink to="/menu">
             <FaList></FaList>
             menu</NavLink>
           </li>
@@ -70,7 +70,7 @@ const Dashboard = () => {
         </ul>
       </div>
       {/*  dashboard content */}
-      <div className="flex-1">
+      <div className="flex-1 mt-10 max-w-[992px] mx-auto">
         <Outlet></Outlet>
       </div>
     </div>
