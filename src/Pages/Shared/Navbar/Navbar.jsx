@@ -27,7 +27,7 @@ const Navbar = () => {
         <NavLink to="/order/salad">Order Food</NavLink>
       </li>
       <li>
-        <Link>
+        <Link to="/dashboard/cart">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
         <div className="indicator">
           <svg

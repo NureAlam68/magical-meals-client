@@ -15,7 +15,7 @@ const Testimonials = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/reviews")
+    fetch("http://localhost:4000/reviews")
       .then((res) => res.json())
       .then((data) => setReviews(data));
   }, []);
@@ -25,14 +25,26 @@ const Testimonials = () => {
         subHeading={"What Our Clients Say"}
         heading={"TESTIMONIALS"}
       ></SectionTitle>
-      <Swiper navigation={true} modules={[Navigation]} className="mySwiper mt-6 md:mt-10 lg:mt-[53px]">
+      <Swiper
+        navigation={true}
+        modules={[Navigation]}
+        className="mySwiper mt-6 md:mt-10 lg:mt-[53px]"
+      >
         {reviews.map((review) => (
           <SwiperSlide key={review._id}>
             <div className="px-10 md:px-20 2xl:px-[112px] flex flex-col items-center">
-              <Rating style={{ maxWidth: 180 }} value={review.rating} readOnly />
+              <Rating
+                style={{ maxWidth: 180 }}
+                value={review.rating}
+                readOnly
+              />
               <FaQuoteLeft className="text-[50px] text-black mt-[24px]" />
-              <p className="text-[#444444] font-inter md:text-[20px] mt-6 md:mt-[30px] lg:mt-[48px] text-center">{review.details}</p>
-              <h3 className="text-[#CD9003] text-[24px] md:text-[32px] font-inter font-medium mt-2">{review.name}</h3>
+              <p className="text-[#444444] font-inter md:text-[20px] mt-6 md:mt-[30px] lg:mt-[48px] text-center">
+                {review.details}
+              </p>
+              <h3 className="text-[#CD9003] text-[24px] md:text-[32px] font-inter font-medium mt-2">
+                {review.name}
+              </h3>
             </div>
           </SwiperSlide>
         ))}
