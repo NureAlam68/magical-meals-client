@@ -10,7 +10,10 @@ const Featured = () => {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${featuredImg})`,
       }}
     >
-      <SectionTitle subHeading={"Check it out"} heading={"FROM OUR MENU"}></SectionTitle>
+      <SectionTitle
+        subHeading={"Check it out"}
+        heading={"FROM OUR MENU"}
+      ></SectionTitle>
       <div className="md:flex justify-center items-center mt-[48px] md:gap-6 xl:gap-[68px]">
         <div>
           <img src={featuredImg} alt="" />
@@ -21,10 +24,13 @@ const Featured = () => {
           <p>
             Our food menu offers a delightful selection of dishes crafted with
             the freshest ingredients. From savory appetizers to indulgent
-            desserts, we cater to all tastes and dietary preferences. Each item is thoughtfully prepared to provide a memorable culinary experience.
+            desserts, we cater to all tastes and dietary preferences. Each item
+            is thoughtfully prepared to provide a memorable culinary experience.
           </p>
           <Link to="/order/salad">
-          <button className="px-[30px] py-[20px] rounded-[8px] text-[20px] text-[#BB8506] font-inter font-medium border-b-[3px] border-[#BB8506] bg-[#111827] mt-6 hover:text-white hover:border-white">ORDER FOOD</button>
+            <button className="px-[30px] py-[20px] rounded-[8px] text-[20px] text-[#BB8506] font-inter font-medium border-b-[3px] border-[#BB8506] bg-[#111827] mt-6 hover:text-white hover:border-white">
+              ORDER FOOD
+            </button>
           </Link>
         </div>
       </div>
