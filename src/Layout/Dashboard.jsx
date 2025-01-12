@@ -1,9 +1,21 @@
-import { FaCalendar, FaHome, FaList, FaMoneyBill, FaShoppingCart, FaStar } from "react-icons/fa";
+import {
+  FaBook,
+  FaCalendar,
+  FaHome,
+  FaList,
+  FaMoneyBill,
+  FaShoppingCart,
+  FaStar,
+  FaUsers,
+  FaUtensils,
+} from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
-import { MdContactMail } from "react-icons/md";
+import { IoBagCheck, IoMenu } from "react-icons/io5";
+import { MdEmail } from "react-icons/md";
 import { NavLink, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
+  const isAdmin = true;
   return (
     <div className="flex md:bg-gray-100">
       <div className="w-[280px] min-h-screen bg-[#D1A054] pt-[50px]">
@@ -16,56 +28,104 @@ const Dashboard = () => {
           </p>
         </div>
         <ul className="menu mt-[60px] px-6 space-y-5 uppercase font-semibold">
-          <li>
-            <NavLink to="/dashboard/userHome">
-            <FaHome></FaHome>
-            User Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/reservation">
-            <FaCalendar></FaCalendar>
-            reservation</NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/payment">
-            <FaMoneyBill></FaMoneyBill>
-            payment history</NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/cart">
-            <FaShoppingCart></FaShoppingCart>
-            My Cart</NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/addReview">
-            <FaStar></FaStar>
-            add review</NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/myBooking">
-            <FaList></FaList>
-            my booking</NavLink>
-          </li>
+          {isAdmin ? (
+            <>
+              <li>
+                <NavLink to="/dashboard/adminHome">
+                  <FaHome></FaHome>
+                  Admin Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/addItems">
+                <FaUtensils />
+                  add items
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/manageItems">
+                  <FaList></FaList>
+                  manage items
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/bookings">
+                <FaBook />
+                  Manage bookings
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/users">
+                <FaUsers />
+                  all users
+                </NavLink>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <NavLink to="/dashboard/userHome">
+                  <FaHome></FaHome>
+                  User Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/reservation">
+                  <FaCalendar></FaCalendar>
+                  reservation
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/payment">
+                  <FaMoneyBill></FaMoneyBill>
+                  payment history
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/cart">
+                  <FaShoppingCart></FaShoppingCart>
+                  My Cart
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/addReview">
+                  <FaStar></FaStar>
+                  add review
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/myBooking">
+                  <IoBagCheck />
+                  my booking
+                </NavLink>
+              </li>
+            </>
+          )}
           <div className="divider"></div>
+          {/* shared nav links */}
           <li>
             <NavLink to="/">
-            <FaHome></FaHome>
-            home</NavLink>
+              <FaHome></FaHome>
+              home
+            </NavLink>
           </li>
           <li>
             <NavLink to="/menu">
-            <FaList></FaList>
-            menu</NavLink>
+            <IoMenu />
+              menu
+            </NavLink>
           </li>
           <li>
             <NavLink to="/dashboard/shop">
-            <FaBagShopping />
-            Shop</NavLink>
+              <FaBagShopping />
+              Shop
+            </NavLink>
           </li>
           <li>
             <NavLink to="/dashboard/contact">
-            <MdContactMail />
-            Contact</NavLink>
+              <MdEmail />
+              Contact
+            </NavLink>
           </li>
         </ul>
       </div>

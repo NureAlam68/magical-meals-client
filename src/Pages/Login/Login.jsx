@@ -8,9 +8,11 @@ import loginImg from "../../assets/others/authentication2.png"
 import { AuthContext } from '../../providers/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -66,17 +68,31 @@ const Login = () => {
     }
   };
 
-  // Google Signin
-  const handleGoogleLogIn = async () => {
-    try {
-      await signInWithGoogle()
+ // Google Sign-in
+const handleGoogleLogIn = async () => {
+  try {
+    const res = await signInWithGoogle();
+    const userInfo = {
+      email: res.user?.email,
+      name: res.user?.displayName,
+    };
 
-      toast.success('Signin Successful')
-      navigate('/')
-    } catch (err) {
-      toast.error(err?.message)
+    const response = await axiosPublic.post("/users", userInfo);
+    
+    if (response.data.insertedId || response.data.insertedId === null) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "User login successfully.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/");
     }
+  } catch (err) {
+    toast.error(err?.message || "Something went wrong!");
   }
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen" 

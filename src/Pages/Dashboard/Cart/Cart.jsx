@@ -27,7 +27,7 @@ const Cart = () => {
             refetch()
             Swal.fire({
               title: "Deleted!",
-              text: "Your file has been deleted.",
+              text: "Your item has been deleted.",
               icon: "success",
             });
           }
@@ -52,7 +52,7 @@ const Cart = () => {
           <h2 className="font-cinzel font-bold lg:text-[24px] xl:text-[32px]">
             total price: ${totalPrice}
           </h2>
-          <button className="bg-[#D1A054] text-white px-[17px] py-[14px] font-cinzel text-[20px] font-bold">
+          <button className="bg-[#D1A054] text-white px-[17px] py-2 font-cinzel text-[20px] font-bold rounded-[8px]">
             Pay
           </button>
         </div>
@@ -86,14 +86,14 @@ const Cart = () => {
                   </td>
                   <td>{item.name}</td>
                   <td>${item.price}</td>
-                  <th>
+                  <td>
                     <button
                       onClick={() => handleDelete(item._id)}
-                      className="btn btn-ghost btn-md text-red-500"
+                      className="btn bg-red-500 hover:text-black btn-md text-white"
                     >
                       <FaTrash></FaTrash>
                     </button>
-                  </th>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -60,17 +60,31 @@ const SignUp = () => {
     });
   };
 
-  // Google Signin
-  const handleGoogleLogIn = async () => {
-    try {
-      await signInWithGoogle();
+  // Google Sign-in
+const handleGoogleLogIn = async () => {
+  try {
+    const res = await signInWithGoogle();
+    const userInfo = {
+      email: res.user?.email,
+      name: res.user?.displayName,
+    };
 
-      toast.success("Signin Successful");
+    const response = await axiosPublic.post("/users", userInfo);
+    
+    if (response.data.insertedId || response.data.insertedId === null) {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "User login successfully.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/");
-    } catch (err) {
-      toast.error(err?.message);
     }
-  };
+  } catch (err) {
+    toast.error(err?.message || "Something went wrong!");
+  }
+};
 
   return (
     <div
