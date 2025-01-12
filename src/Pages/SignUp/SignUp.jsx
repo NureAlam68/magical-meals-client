@@ -7,30 +7,52 @@ import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import toast from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
+  const axiosPublic = useAxiosPublic();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-  const { createUser, updateUserProfile, signInWithGoogle, setUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile, signInWithGoogle, setUser } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data);
     createUser(data.email, data.password).then((result) => {
       const loggedUser = result.user;
       console.log(loggedUser);
       updateUserProfile(data.name, data.photoURL)
         .then(() => {
           setUser((prevUser) => {
-            return { ...prevUser, displayName: data.name, photoURL: data.photoURL };
+            return {
+              ...prevUser,
+              displayName: data.name,
+              photoURL: data.photoURL,
+            };
           });
-          reset();
-          toast.success("User created successfully");
-          navigate("/");
+          // create user entry in the database
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+          };
+          axiosPublic.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              reset();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "User created successfully.",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              navigate("/");
+            }
+          });
         })
         .catch((error) => {
           toast.error("Error updating user profile", { error });
@@ -41,14 +63,14 @@ const SignUp = () => {
   // Google Signin
   const handleGoogleLogIn = async () => {
     try {
-      await signInWithGoogle()
+      await signInWithGoogle();
 
-      toast.success('Signin Successful')
-      navigate('/')
+      toast.success("Signin Successful");
+      navigate("/");
     } catch (err) {
-      toast.error(err?.message)
+      toast.error(err?.message);
     }
-  }
+  };
 
   return (
     <div
