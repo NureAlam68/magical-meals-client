@@ -13,9 +13,10 @@ import { FaBagShopping } from "react-icons/fa6";
 import { IoBagCheck, IoMenu } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   return (
     <div className="flex md:bg-gray-100">
       <div className="w-[280px] min-h-screen bg-[#D1A054] pt-[50px]">
