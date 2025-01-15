@@ -4,6 +4,7 @@ import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const ManageItems = () => {
   const [menu, , refetch] = useMenu();
@@ -11,27 +12,27 @@ const ManageItems = () => {
 
   const handleDeleteItem = (item) => {
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then( async (result) => {
-        if (result.isConfirmed) {
-            const res = await axiosSecure.delete(`/menu/${item._id}`);
-            if(res.data.deletedCount > 0) {
-                refetch();
-                Swal.fire({
-                    title: "Deleted!",
-                    text: `${item.name} has been deleted`,
-                    icon: "success"
-                  });
-            }
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosSecure.delete(`/menu/${item._id}`);
+        if (res.data.deletedCount > 0) {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: `${item.name} has been deleted`,
+            icon: "success",
+          });
         }
-      });
-  }
+      }
+    });
+  };
   return (
     <div>
       <Helmet>
@@ -75,18 +76,19 @@ const ManageItems = () => {
                     </div>
                   </td>
                   <td>{item.name}</td>
+                  <td>${item.price}</td>
                   <td>
-                    ${item.price}
-                  </td>
-                  <td>
-                    <button className="btn bg-[#D1A054] btn-md text-white hover:text-black">
-                      <FaEdit></FaEdit>
-                    </button>
+                    <Link to={`/dashboard/updateItem/${item._id}`}>
+                      <button className="btn bg-[#D1A054] btn-md text-white hover:text-black">
+                        <FaEdit></FaEdit>
+                      </button>
+                    </Link>
                   </td>
                   <td>
                     <button
-                    onClick={() => handleDeleteItem(item)}
-                     className="btn bg-red-500 hover:text-black btn-md text-white">
+                      onClick={() => handleDeleteItem(item)}
+                      className="btn bg-red-500 hover:text-black btn-md text-white"
+                    >
                       <FaTrash></FaTrash>
                     </button>
                   </td>
