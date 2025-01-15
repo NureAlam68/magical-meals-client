@@ -4,6 +4,7 @@ import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, refetch] = useCart();
@@ -21,17 +22,16 @@ const Cart = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/carts/${id}`)
-        .then(res => {
-          if(res.data.deletedCount > 0) {
-            refetch()
+        axiosSecure.delete(`/carts/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            refetch();
             Swal.fire({
               title: "Deleted!",
               text: "Your item has been deleted.",
               icon: "success",
             });
           }
-        })
+        });
       }
     });
   };
@@ -52,9 +52,17 @@ const Cart = () => {
           <h2 className="font-cinzel font-bold lg:text-[24px] xl:text-[32px]">
             total price: ${totalPrice}
           </h2>
-          <button className="bg-[#D1A054] text-white px-[17px] py-2 font-cinzel text-[20px] font-bold rounded-[8px]">
-            Pay
-          </button>
+          {cart.length ? (
+            <Link to="/dashboard/payment">
+              <button className="bg-[#D1A054] text-white px-[17px] py-2 font-cinzel text-[20px] font-bold rounded-[8px]">
+                Pay
+              </button>
+            </Link>
+          ) : (
+            <button disabled className="bg-[#D1A054] text-white px-[17px] py-2 font-cinzel text-[20px] font-bold rounded-[8px]">
+              Pay
+            </button>
+          )}
         </div>
         <div className="mt-10">
           <table className="table">
