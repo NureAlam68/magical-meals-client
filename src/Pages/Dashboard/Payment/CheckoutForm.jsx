@@ -1,10 +1,27 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useCart from "../../../hooks/useCart";
+import useAuth from "../../../hooks/useAuth";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState('');
+  const [clientSecret, setClientSecret] = useState('');
+  const [transactionId, setTransactionId] = useState('');
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [cart] = useCart();
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+
+  useEffect(() => {
+    axiosSecure.post('create-payment-intent', { price: totalPrice})
+    .then(res => {
+      setClientSecret(res.data.clientSecret)
+      console.log(res.data.clientSecret)
+    })
+  }, [axiosSecure, totalPrice])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,6 +48,27 @@ const CheckoutForm = () => {
     } else {
       console.log('[PaymentMethod]', paymentMethod);
       setError('')
+    }
+
+    // confirm payment
+    const { paymentIntent, error: confirmError} = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          email: user?.email || 'anonymous',
+          name: user?.displayName || 'anonymous'
+        }
+      }
+    })
+    if(confirmError) {
+      console.log('confirm error')
+    }
+    else{
+      console.log('payment intent', paymentIntent)
+      if(paymentIntent.status === 'succeeded'){
+        console.log('transaction id', paymentIntent.id);
+        setTransactionId(paymentIntent.id)
+      }
     }
   };
   return (
@@ -71,12 +109,15 @@ const CheckoutForm = () => {
       </div>
       <button
         type="submit"
-        disabled={!stripe}
+        disabled={!stripe || !clientSecret}
         className="bg-[#570DF8] text-white py-2 px-20 rounded-lg font-semibold hover:bg-purple-700 disabled:bg-gray-400"
       >
         Pay
       </button>
       <p className="text-red-600">{error}</p>
+      {
+        transactionId && <p className="text-green-600">Your transaction id: {transactionId}</p>
+      }
     </form>
     </div>
   );
