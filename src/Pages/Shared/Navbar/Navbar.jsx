@@ -4,9 +4,11 @@ import { AuthContext } from "../../../providers/AuthProvider";
 import { useContext } from "react";
 import { CgProfile } from "react-icons/cg";
 import useCart from "../../../hooks/useCart";
+import useAdmin from "../../../hooks/useAdmin";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [isAdmin] = useAdmin();
   const [cart] = useCart();
   const handleLogOut = () => {
     logOut()
@@ -26,6 +28,16 @@ const Navbar = () => {
       <li>
         <NavLink to="/order/salad">Order Food</NavLink>
       </li>
+      {user && isAdmin && (
+        <li>
+          <NavLink to="/dashboard/adminHome">Dashboard</NavLink>
+        </li>
+      )}
+      {user && !isAdmin && (
+        <li>
+          <NavLink to="/dashboard/userHome">Dashboard</NavLink>
+        </li>
+      )}
       <li>
         <Link to="/dashboard/cart">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
