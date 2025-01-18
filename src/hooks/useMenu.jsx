@@ -9,7 +9,7 @@ const useMenu = () => {
   // const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
-  //   fetch("http://localhost:4000/menu")
+  //   fetch("https://magical-meals-server.vercel.app/menu")
   //     .then((res) => res.json())
   //     .then((data) => {
   //       setMenu(data);
@@ -17,17 +17,17 @@ const useMenu = () => {
   //     });
   // }, []);
 
-  const { data: menu = [], isPending: loading, refetch} = useQuery({
-    queryKey: ['menu'],
-    queryFn: async() => {
-      const res = await axiosPublic.get('/menu');
+  const {
+    data: menu = [],
+    isPending: loading,
+    refetch,
+  } = useQuery({
+    queryKey: ["menu"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/menu");
       return res.data;
-    }
-  })
-
-
-
-
+    },
+  });
 
   return [menu, loading, refetch];
 };
