@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://magical-meals-server.vercel.app/menu/${params.id}`),
+          fetch(`http://localhost:4000/menu/${params.id}`),
       },
       {
         path: "paymentHistory",
