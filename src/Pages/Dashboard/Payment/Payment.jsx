@@ -5,12 +5,36 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../../hooks/useAuth";
+import useCart from "../../../hooks/useCart";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
 
 const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("stripe");
   const { user } = useAuth();
+  const [cart] = useCart();
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+  const axiosSecure = useAxiosSecure();
+
+  const handlePayment = async () => {
+    const payment = {
+      email: user.email,
+      price: totalPrice,
+      transactionId: "",
+      date: new Date(),
+      cartIds: cart.map((item) => item._id),
+      menuItemIds: cart.map((item) => item.menuId),
+      status: "pending",
+    };
+
+    const response = await axiosSecure.post("/create-ssl-payment", payment);
+
+    if(response.data?.gatewayUrl) {
+      window.location.replace(response.data.gatewayUrl);
+    }
+    console.log(response);
+  };
 
   return (
     <div>
@@ -39,7 +63,7 @@ const Payment = () => {
             checked={paymentMethod === "other"}
             onChange={() => setPaymentMethod("other")}
           />
-          Other Payment
+          SSL Commerz
         </label>
       </div>
 
@@ -51,7 +75,9 @@ const Payment = () => {
           </Elements>
         ) : (
           <div className="p-6 border rounded-lg">
-            <label className="block mb-2 text-lg font-semibold">Payment Details</label>
+            <label className="block mb-2 text-lg font-semibold">
+              Payment Details
+            </label>
             <input
               type="email"
               defaultValue={user?.email}
@@ -59,7 +85,10 @@ const Payment = () => {
               placeholder="Enter your email"
               className="w-full p-2 border rounded-lg mb-4"
             />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            <button
+              onClick={handlePayment}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
               Pay Now
             </button>
           </div>
